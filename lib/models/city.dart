@@ -17,8 +17,8 @@ class City {
   late final String country;
   late final int population;
   late final int timezone;
-  late final int sunrise;
-  late final int sunset;
+  late final DateTime sunrise;
+  late final DateTime sunset;
 
   City.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,20 +27,7 @@ class City {
     country = json['country'];
     population = json['population'];
     timezone = json['timezone'];
-    sunrise = json['sunrise'];
-    sunset = json['sunset'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['coord'] = coord.toJson();
-    data['country'] = country;
-    data['population'] = population;
-    data['timezone'] = timezone;
-    data['sunrise'] = sunrise;
-    data['sunset'] = sunset;
-    return data;
+    sunrise = DateTime.fromMillisecondsSinceEpoch(json['sunrise'] * 1000);
+    sunset = DateTime.fromMillisecondsSinceEpoch(json['sunset'] * 1000);
   }
 }
