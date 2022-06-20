@@ -7,7 +7,6 @@ class Forecast {
     required this.city,
   });
 
-  late final int cnt;
   late final List<DayForecast> daysForecast;
   late final City city;
 
