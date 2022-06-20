@@ -11,7 +11,8 @@ class ApiClient with Interceptor {
     final Map<String, String> params = {
       'q': city,
       'appid': Config.apiKey,
-      'cnt': days.toString(),
+      // every 3 hours 3 * 8 = 24
+      'cnt': (8 * days).toString(),
     };
 
     final Uri uri = Uri.https(Config.host, '/data/2.5/forecast', params);
