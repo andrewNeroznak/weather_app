@@ -7,11 +7,13 @@ import 'package:weather_app/network/interceptor_mixin.dart';
 
 class ApiClient with Interceptor {
   final _Client _client = _Client();
-  Future<Forecast> fetchWeather(String city) {
+  Future<Forecast> fetchWeather(String city, {int days = 5}) {
     final Map<String, String> params = {
       'q': city,
       'appid': Config.apiKey,
+      'cnt': days.toString(),
     };
+
     final Uri uri = Uri.https(Config.host, '/data/2.5/forecast', params);
 
     return _client.get(uri).then(interceptor).then((response) {
