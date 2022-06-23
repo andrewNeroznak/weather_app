@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 import 'package:http/io_client.dart';
-import 'package:weather_app/models/forecast.dart';
+import 'package:weather_app/models/weather.dart';
 import 'package:weather_app/network/config.dart';
 import 'package:weather_app/network/interceptor_mixin.dart';
 
 class ApiClient with Interceptor {
   final _Client _client = _Client();
-  Future<Forecast> fetchWeather(String city, {int days = 5}) {
+  Future<Weather> fetchForecast(String city, {int days = 5}) {
     final Map<String, String> params = {
       'q': city,
       'appid': Config.apiKey,
-      // every 3 hours 3 * 8 = 24
+      // API returns data points in 3-hour intervals -> 1 day = 8 intervals
       'cnt': (8 * days).toString(),
     };
 
@@ -19,7 +19,7 @@ class ApiClient with Interceptor {
 
     return _client.get(uri).then(interceptor).then((response) {
       final decoded = json.decode(response.body);
-      return Forecast.fromJson(decoded);
+      return Weather.fromJson(decoded);
     });
   }
 }
