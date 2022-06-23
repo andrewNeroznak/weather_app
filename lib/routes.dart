@@ -1,9 +1,9 @@
-enum Routes { home }
+enum Routes { weatherOverview }
 
 extension Name on Routes {
   String get path {
     switch (this) {
-      case Routes.home:
+      case Routes.weatherOverview:
         return '/';
     }
   }
