@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:async/async.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -122,7 +121,8 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 child: CurrentWeather(
                                   selectedCity: _selectedCity,
-                                  weather: _selectedDayForecast!,
+                                  weather: _selectedDayForecast ??
+                                      snapshot.data!.weather.forecasts.first,
                                   selectedUnit: _selectedUnit,
                                   sunrise: weather.city.sunrise,
                                   sunset: weather.city.sunset,
@@ -272,14 +272,8 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
         .then((data) {
       final weather = data[0] as Weather;
       final cities = data[1] as List<String>;
-      if (mounted) {
-        final firstDay = weather.forecasts.firstOrNull;
+      _cities ??= cities;
 
-        setState(() {
-          _cities = cities;
-          _selectedDayForecast ??= firstDay;
-        });
-      }
       return _Data(weather, cities);
     });
   }
