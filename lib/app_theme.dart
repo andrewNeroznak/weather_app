@@ -12,6 +12,11 @@ class AppTheme {
       brightness: Brightness.light,
       inputDecorationTheme: _inputDecorationTheme,
       cardColor: Colors.grey.shade200,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.black87,
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         foregroundColor: Colors.black,
         actionsIconTheme: IconThemeData(color: Colors.black),
@@ -27,6 +32,10 @@ class AppTheme {
       fontFamily: 'Ubuntu',
       cardColor: Colors.grey.shade900,
       brightness: Brightness.dark,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.grey.shade200, onPrimary: Colors.black),
+      ),
       scaffoldBackgroundColor: Colors.black,
       inputDecorationTheme: _inputDecorationTheme,
       appBarTheme: const AppBarTheme(

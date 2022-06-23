@@ -98,9 +98,14 @@ class NotificationView extends StatelessWidget implements PreferredSizeWidget {
 
     children.addAll([
       const SizedBox(height: 20),
-      TextButton(
-        onPressed: onRetry,
-        child: Text(localizations.notificationRetry),
+      UnconstrainedBox(
+        child: ElevatedButton(
+          onPressed: onRetry,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(localizations.notificationRetry),
+          ),
+        ),
       ),
     ]);
 
