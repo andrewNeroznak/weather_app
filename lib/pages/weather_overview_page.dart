@@ -15,10 +15,12 @@ import 'package:weather_app/network/config.dart';
 import 'package:weather_app/weather_app.dart';
 import 'package:weather_app/widgets/current_weather.dart';
 import 'package:weather_app/widgets/notifcation_view.dart';
+import 'package:weather_app/widgets/platform_dialog.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../features/weather_search_delegate.dart';
 import '../models/day_forecast.dart';
+import '../network/network_error_handler.dart';
 
 class _Data {
   final Weather weather;
@@ -96,15 +98,18 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
                 child: SmartRefresher(
                   controller: _refreshController,
                   onRefresh: () async {
-                    final data = await _fetchData(_selectedCity);
+                    try {
+                      final data = await _fetchData(_selectedCity);
 
-                    setState(() {
-                      _data = data;
-                    });
-                    _refreshController.refreshCompleted();
-                  },
-                  onLoading: () {
-                    _refreshController.loadComplete();
+                      setState(() {
+                        _data = data;
+                      });
+
+                      _refreshController.refreshCompleted();
+                    } catch (error) {
+                      _showErroDialog(error);
+                      _refreshController.refreshFailed();
+                    }
                   },
                   enablePullDown: true,
                   child: CustomScrollView(
@@ -268,6 +273,7 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
     final getForecastFuture = apiClient.fetchForecast(city);
     final getCitiesFuture =
         _cities != null ? Future.value(_cities) : _parseCities();
+
     return Future.wait([getForecastFuture, getCitiesFuture], eagerError: true)
         .then((data) {
       final weather = data[0] as Weather;
@@ -276,6 +282,18 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
 
       return _Data(weather, cities);
     });
+  }
+
+  void _showErroDialog(Object error) {
+    final NetworkErrorHandler errorHandler = NetworkErrorHandler();
+    showDialog(
+      context: context,
+      builder: (context) => PlatformDialog(
+        title: Text(errorHandler.getErrorTitle(context, error)),
+        content: Text(errorHandler.getErrorDescription(context, error)),
+        onConfirm: Navigator.of(context).pop,
+      ),
+    );
   }
 
   void _setSelectedDay(DayForecast dayForecast) {
