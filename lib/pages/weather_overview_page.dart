@@ -232,14 +232,14 @@ class _WeatherOverviewPageState extends State<WeatherOverviewPage> {
                     children: [
                       Text(DateFormat.EEEE().format(dayForecast.dt)),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       BoxedIcon(dayForecast.weatherIcon),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Text(
-                        dayForecast.temp.value(_selectedUnit),
+                        '${dayForecast.tempMin.celsius.toStringAsFixed(0)} / ${dayForecast.tempMax.value(_selectedUnit)}',
                       ),
                     ],
                   ),
